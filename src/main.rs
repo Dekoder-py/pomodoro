@@ -19,6 +19,8 @@ impl PomoApp {
 impl eframe::App for PomoApp {
     fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
         egui::CentralPanel::default().show(ctx, |ui| {
+            ctx.request_repaint_after_secs(1.0);
+
             ui.heading("Pomodoro!");
 
             ui.add_space(10.0);
@@ -33,7 +35,6 @@ impl eframe::App for PomoApp {
                     self.timer_running = false
                 } else {
                     ui.label(format!("{}", self.start_time.elapsed().as_secs()));
-                    thread::sleep(Duration::from_secs(1));
                 }
             }
         });
