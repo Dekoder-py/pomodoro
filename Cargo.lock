@@ -2315,7 +2315,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "pomodoro"
+name = "pomodoro-gui"
 version = "0.1.0"
 dependencies = [
  "eframe",

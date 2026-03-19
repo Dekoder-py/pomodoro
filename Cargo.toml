@@ -1,7 +1,15 @@
 [package]
-name = "pomodoro"
+name = "pomodoro-gui"
+description = "A simple pomodoro app"
 version = "0.1.0"
 edition = "2024"
+readme = "README.md"
+license = "MIT"
+repository = "https://github.com/Dekoder-py/pomodoro"
+
+[[bin]]
+name = "pomodoro"
+path = "src/main.rs"
 
 [dependencies]
 eframe = "0.33.3"
