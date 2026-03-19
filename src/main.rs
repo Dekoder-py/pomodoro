@@ -53,6 +53,10 @@ impl eframe::App for PomoApp {
                 }
             }
 
+            ui.add_space(10.0);
+            ui.spacing();
+            ui.add_space(5.0);
+
             if self.timer_running {
                 let elapsed = self.start_time.elapsed();
                 let secs = elapsed.as_secs();
@@ -64,7 +68,8 @@ impl eframe::App for PomoApp {
                     self.timer_running = false;
                     self.has_run = true;
                 } else {
-                    ui.label(format!("{remaining_mins:02}:{remaining_secs:02}"));
+                    let label_text = format!("{remaining_mins:02}:{remaining_secs:02}");
+                    ui.label(egui::RichText::new(&label_text).size(18.0));
                     let next_sec = Duration::from_secs(secs + 1);
 
                     ctx.request_repaint_after(next_sec - elapsed);
