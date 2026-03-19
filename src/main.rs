@@ -4,6 +4,8 @@ use eframe::egui;
 
 struct PomoApp {
     start_time: Instant,
+    time: u64,
+    time_input: String,
     timer_running: bool,
     has_run: bool,
 }
@@ -12,6 +14,8 @@ impl PomoApp {
     fn new(_cc: &eframe::CreationContext<'_>) -> Self {
         Self {
             start_time: Instant::now(),
+            time: 1500, // default timer is 25 minutes (the standard for pomodoro)
+            time_input: String::new(),
             timer_running: false,
             has_run: false,
         }
@@ -21,9 +25,22 @@ impl PomoApp {
 impl eframe::App for PomoApp {
     fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
         egui::CentralPanel::default().show(ctx, |ui| {
-            ui.heading("Pomodoro!");
+            ui.heading(format!("{} Minute Pomodoro", self.time / 60));
 
             ui.add_space(10.0);
+
+            ui.horizontal(|ui| {
+                ui.label("Time (mins):");
+                let input_field = ui.text_edit_singleline(&mut self.time_input);
+                if ui.button("Set").clicked()
+                    || (input_field.lost_focus() && ui.input(|i| i.key_pressed(egui::Key::Enter)))
+                        && !self.time_input.is_empty()
+                {
+                    let time: u64 = self.time_input.parse().expect("Failed to parse time input");
+                    self.time = time * 60;
+                }
+            });
+
             if !self.timer_running {
                 if ui.button("Start").clicked() {
                     self.start_time = Instant::now();
@@ -39,12 +56,11 @@ impl eframe::App for PomoApp {
             if self.timer_running {
                 let elapsed = self.start_time.elapsed();
                 let secs = elapsed.as_secs();
-                let remaining = 10 - secs;
+                let remaining = self.time - secs;
                 let remaining_mins = remaining / 60;
                 let remaining_secs = remaining % 60;
 
                 if remaining <= 0 {
-                    // 5 minutes
                     self.timer_running = false;
                     self.has_run = true;
                 } else {
