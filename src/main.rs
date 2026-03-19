@@ -64,7 +64,7 @@ impl eframe::App for PomoApp {
                     self.timer_running = false;
                     self.has_run = true;
                 } else {
-                    ui.label(format!("{remaining_mins}:{remaining_secs}"));
+                    ui.label(format!("{remaining_mins:02}:{remaining_secs:02}"));
                     let next_sec = Duration::from_secs(secs + 1);
 
                     ctx.request_repaint_after(next_sec - elapsed);
