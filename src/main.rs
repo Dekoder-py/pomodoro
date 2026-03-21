@@ -1,7 +1,7 @@
+use egui_thematic::{ThemeConfig, ThemeEditorState, render_theme_panel};
 use std::time::{Duration, Instant};
 
-use eframe::egui;
-
+use eframe::egui::{self, Color32, ProgressBar};
 struct PomoApp {
     start_time: Instant,
     time: u64,
@@ -24,7 +24,9 @@ impl PomoApp {
 
 impl eframe::App for PomoApp {
     fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
+        let theme = ThemeConfig::catppuccin_mocha_preset(); // THE BEST COLORSCHEME OF ALL TIME
         egui::CentralPanel::default().show(ctx, |ui| {
+            ctx.set_visuals(theme.to_visuals());
             ui.heading(format!("{} Minute Pomodoro", self.time / 60));
 
             ui.add_space(10.0);
@@ -70,6 +72,11 @@ impl eframe::App for PomoApp {
                 } else {
                     let label_text = format!("{remaining_mins:02}:{remaining_secs:02}");
                     ui.label(egui::RichText::new(&label_text).size(18.0));
+                    let progress = 1 as f32 - ((remaining as f32 / self.time as f32 * 100 as f32) / 100 as f32);
+                    let bar = ProgressBar::new(progress)
+                        .fill(Color32::from_hex("#cba6f7").expect("Failed to convert hex code"));
+                    ui.add(bar);
+
                     let next_sec = Duration::from_secs(secs + 1);
 
                     ctx.request_repaint_after(next_sec - elapsed);

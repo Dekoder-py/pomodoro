@@ -13,3 +13,4 @@ path = "src/main.rs"
 
 [dependencies]
 eframe = "0.33.3"
+egui-thematic = "0.1.1"
