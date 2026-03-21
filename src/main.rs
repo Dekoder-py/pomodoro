@@ -1,4 +1,4 @@
-use egui_thematic::{ThemeConfig, ThemeEditorState, render_theme_panel};
+use egui_thematic::ThemeConfig;
 use std::time::{Duration, Instant};
 
 use eframe::egui::{self, Color32, ProgressBar};
